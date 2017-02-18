@@ -130,11 +130,14 @@
     <input class="mdl-textfield__input" type="password" id="txtPassword">
     <label class="mdl-textfield__label" for="sample3">Contrasena</label>
   </div>
-  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" type="submit">
-  Ingresar
+  <button id="btnLogin" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" type="submit">
+  Iniciar sesion
 </button>
 <button id="btnRegistrarse" class="mdl-button mdl-js-button mdl-button--raised  mdl-js-ripple-effect" type="submit">
   Registrarse
+</button>
+<button id="btnLogout" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" type="submit">
+  Cerrar sesion
 </button>
 </form>
 <script>
@@ -142,6 +145,14 @@
     const txtEmail = document.getElementById('txtEmail');
     const txtPassword = document.getElementById('txtPassword');
     const btnRegistrarse = document.getElementById('btnRegistrarse');
+    //login event
+    btnLogin.addEventListener('click', e => {
+        const email = txtEmail.value;
+        const password = txtPassword.value;
+        const auth = firebase.auth();
+        const promise =  firebase.auth().signInWithEmailAndPassword(email, password);
+        promise.catch(e => console.log(e.message));
+    });
     //signup event
     btnRegistrarse.addEventListener('click', e => {
       const email = txtEmail.value;
@@ -150,12 +161,18 @@
       const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
       promise.catch(e => console.log(e.message));
     });
+    //logout event
+    btnLogout.addEventListener('click', e => {
+      firebase.auth().signOut();
+    });
    //realtima authentication listener
    firebase.auth().onAuthStateChanged(firebaseUser => {
         if(firebaseUser){
           console.log(firebaseUser);
+          btnLogout.classList.remove('hide');
         }else{
           console.log('no has iniciado sesion');
+           btnLogout.classList.add('hide');
         }
    });
 </script>
