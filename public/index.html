@@ -117,29 +117,47 @@
         <div class="mdl-card__title-text">
           <h3>Iniciar sesion</h3>
         </div>
-        <div>
+        <div class="container">
             <!-- Textfield with Floating Label -->
 
+<!--Aqui esta el formulario donde se piden los datos-->
 <form action="#">
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" id="email">
+    <input class="mdl-textfield__input" type="text" id="txtEmail">
     <label class="mdl-textfield__label" for="sample3">Correo</label>
   </div>
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" id="password">
+    <input class="mdl-textfield__input" type="password" id="txtPassword">
     <label class="mdl-textfield__label" for="sample3">Contrasena</label>
   </div>
   <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" type="submit">
   Ingresar
 </button>
+<button id="btnRegistrarse" class="mdl-button mdl-js-button mdl-button--raised  mdl-js-ripple-effect" type="submit">
+  Registrarse
+</button>
 </form>
 <script>
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-  // Handle Errors here.
-  var errorCode = error.code;
-  var errorMessage = error.message;
-  // ...
-});
+    //obtengo los datos
+    const txtEmail = document.getElementById('txtEmail');
+    const txtPassword = document.getElementById('txtPassword');
+    const btnRegistrarse = document.getElementById('btnRegistrarse');
+    //signup event
+    btnRegistrarse.addEventListener('click', e => {
+      const email = txtEmail.value;
+      const password = txtPassword.value;
+      const auth = firebase.auth();
+      const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
+      promise.catch(e => console.log(e.message));
+    });
+   //realtima authentication listener
+   firebase.auth().onAuthStateChanged(firebaseUser => {
+        if(firebaseUser){
+          console.log(firebaseUser);
+        }else{
+          console.log('no has iniciado sesion');
+        }
+   });
 </script>
 
 
