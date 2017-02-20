@@ -123,8 +123,7 @@
         </form>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" 
-        onClick= "parent.location='ingreso.html'" >Registrarse</button>
+        <button onClick="parent.location='ingreso.html'" id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >Registrarse</button>
       </div>
       
     </div>
@@ -135,28 +134,41 @@
     const txtPassword = document.getElementById('txtPassword');
     const btnRegistrarse = document.getElementById('btnRegistrarse');
     const btnLogout = document.getElementById('btnLogout');
-    
+    const txtNombre = document.getElementById('txtNombre');
+    const txtApellido = document.getElementById('txtApellido');
+    const txtCedula = document.getElementById('txtCedula');
+    const txtTelefono = document.getElementById('txtTelefono');
+   
     //signup event
     btnRegistrarse.addEventListener('click', e => {
       const email = txtEmail.value;
       const password = txtPassword.value;
       const auth = firebase.auth();
+      const nombre = txtNombre.value;
+      const apellido = txtApellido.value;
+      const cedula = txtCedula.value;
+      const telefono = txtTelefono.value;
 
       const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
       promise.catch(e => console.log(e.message));
-    });
-    //logout event
-    btnLogout.addEventListener('click', e => {
-      firebase.auth().signOut();
+       //PRUEBA: meto los datos en la base de datos
+      function writeUserData(nombre, apellido, telefono, cedula){
+        firebase.database().ref('users/' + email).set({
+          Nombre: nombre,
+          Apellido: apellido,
+          Telefono: telefono,
+          Cedula: cedula
+        })
+      }
     });
    //realtima authentication listener
    firebase.auth().onAuthStateChanged(firebaseUser => {
         if(firebaseUser){
           console.log(firebaseUser);
-          btnLogout.classList.remove('hide');
+         
         }else{
           console.log('No has iniciado sesion');
-           btnLogout.classList.add('hide');
+     
         }
    });
 </script>

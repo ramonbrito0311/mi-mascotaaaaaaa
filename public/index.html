@@ -107,15 +107,14 @@
         </form>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnLogin" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
-        onClick= "parent.location='ingreso.html'">Ingresar</button>
+        <button id ="btnLogin" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Ingresar</button>
       </div>
       <div class="mdl-card__actions mdl-card--border">
         <button id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" 
         onClick= "parent.location='signup.html'" >Registrarse</button>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnLogout" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Salir</button>
+        <button id ="btnLogout" class="mdl-button hide mdl-button--colored mdl-js-button mdl-js-ripple-effec">Salir</button>
       </div>
     </div>
     <script>
@@ -139,7 +138,7 @@
       const password = txtPassword.value;
       const auth = firebase.auth();
 
-      //const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
+      const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
       promise.catch(e => console.log(e.message));
     });
     //logout event
