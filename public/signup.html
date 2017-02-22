@@ -27,6 +27,7 @@
     messagingSenderId: "1086282665376"
   };
   firebase.initializeApp(config);
+  const database = firebase.database();
 </script>
   <head>
   <script src="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.js"></script>
@@ -123,7 +124,7 @@
         </form>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button onClick="parent.location='ingreso.html'" id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" >Registrarse</button>
+        <button id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Registrarse</button>
       </div>
       
     </div>
@@ -151,18 +152,8 @@
 
       const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
       promise.catch(e => console.log(e.message));
-       //PRUEBA: meto los datos en la base de datos
-      function writeUserData(nombre, apellido, telefono, cedula){
-        firebase.database().ref('users/' + email).set({
-          Nombre: nombre,
-          Apellido: apellido,
-          Telefono: telefono,
-          Cedula: cedula
-        })
-      }
-    });
-   //realtima authentication listener
-   firebase.auth().onAuthStateChanged(firebaseUser => {
+       //realtima authentication listener
+        firebase.auth().onAuthStateChanged(firebaseUser => {
         if(firebaseUser){
           console.log(firebaseUser);
          
@@ -171,6 +162,17 @@
      
         }
    });
+       //PRUEBA: meto los datos en la base de datos
+      const usuarios = database.ref().child("usuarios/" + firebaseUser.uid).ref();
+      const primaryKey = firebaseUser.uid;
+        firebase.database().ref(primaryKey).set({
+          Nombre: nombre,
+          Apellido: apellido,
+          Telefono: telefono,
+          Cedula: cedula
+        })
+    });
+  
 </script>
   </main>
 </div>

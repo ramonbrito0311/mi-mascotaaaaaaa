@@ -83,7 +83,9 @@
       <!-- Title -->
       <span class="mdl-layout-title">Concurso Mi Mascota</span>
       <!-- Add spacer, to align navigation to the right -->
-      <div class="mdl-layout-spacer"></div>
+      <div class="mdl-layout-spacer">
+        <button id ="btnLogout" class="mdl-button hide mdl-button--colored mdl-js-button mdl-js-ripple-effect">Salir</button>
+      </div>
       <!-- Navigation. We hide it in small screens. -->
     </div>
   </header>
@@ -102,62 +104,12 @@
 <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
   <div class="mdl-snackbar__text"></div>
 </div>
-    <script>
-    //este es el script que contiene las funciones de autenticacion de usuarios
-    //obtengo los datos
-    const txtEmail = document.getElementById('txtEmail');
-    const txtPassword = document.getElementById('txtPassword');
-    const btnRegistrarse = document.getElementById('btnRegistrarse');
-    const btnLogout = document.getElementById('btnLogout');
-    //login event
-    btnLogin.addEventListener('click', e => {
-        const email = txtEmail.value;
-        const password = txtPassword.value;
-        const auth = firebase.auth();
-        const promise =  firebase.auth().signInWithEmailAndPassword(email, password);
-        promise.catch(e => console.log(e.message));
-        
-            if(firebaseUser){
-              window.location="signup.html";
-            }else{
-              (function() {
-                    'use strict';
-                      window['counter'] = 0;
-                     var snackbarContainer = document.querySelector('#demo-toast-example');
-                     var showToastButton = document.querySelector('#btnLogin');
-                      showToastButton.addEventListener('click', function() {
-                     'use strict';
-                     var data = {message: 'Esto es un mensaje'};
-                     snackbarContainer.MaterialSnackbar.showSnackbar(data);
-                });
-              }());
-            }
-         });
-    //signup event
-    btnRegistrarse.addEventListener('click', e => {
-      const email = txtEmail.value;
-      const password = txtPassword.value;
-      const auth = firebase.auth();
-
-      //const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
-      promise.catch(e => console.log(e.message));
-    });
-    //logout event
-    btnLogout.addEventListener('click', e => {
+<script>
+  btnLogout.addEventListener('click', e => {
       firebase.auth().signOut();
     });
-   //realtime authentication listener
-   firebase.auth().onAuthStateChanged(firebaseUser => {
-        if(firebaseUser){
-          console.log(firebaseUser);
-          btnLogout.classList.remove('hide');
-        }else{
-          console.log('No has iniciado sesion');
-           btnLogout.classList.add('hide');
-        }
-   });
 </script>
-  </main>
+      </main>
 </div>
   </main>
     </div>

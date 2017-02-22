@@ -27,6 +27,7 @@
     messagingSenderId: "1086282665376"
   };
   firebase.initializeApp(config);
+
 </script>
   <head>
   <script src="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.js"></script>
@@ -114,7 +115,7 @@
         onClick= "parent.location='signup.html'" >Registrarse</button>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnLogout" class="mdl-button hide mdl-button--colored mdl-js-button mdl-js-ripple-effec">Salir</button>
+        <button id ="btnLogout" class="mdl-button mdl-js-button mdl-js-ripple-effect">Salir</button>
       </div>
     </div>
     <script>
@@ -142,9 +143,7 @@
       promise.catch(e => console.log(e.message));
     });
     //logout event
-    btnLogout.addEventListener('click', e => {
-      firebase.auth().signOut();
-    });
+
    //realtima authentication listener
    firebase.auth().onAuthStateChanged(firebaseUser => {
         if(firebaseUser){
