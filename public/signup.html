@@ -163,9 +163,8 @@
         }
    });
        //PRUEBA: meto los datos en la base de datos
-      const usuarios = database.ref().child("usuarios/" + firebaseUser.uid).ref();
-      const primaryKey = firebaseUser.uid;
-        firebase.database().ref(primaryKey).set({
+      var firebaseUser = firebase.auth().currentUser;
+        firebase.database().ref("user/" + firebaseUser.uid).set({
           Nombre: nombre,
           Apellido: apellido,
           Telefono: telefono,
