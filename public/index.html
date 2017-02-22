@@ -131,8 +131,7 @@
         const email = txtEmail.value;
         const password = txtPassword.value;
         const auth = firebase.auth();
-        const promise = firebase.auth().signInWithEmailAndPassword(email, password);
-        //window.location = "/ingreso.html";
+        const promise = auth.signInWithEmailAndPassword(email, password).then(function(){window.location.replace("/ingreso.html");});        
         promise.catch(e => console.log(e.message));
         
     });
@@ -142,10 +141,8 @@
       const email = txtEmail.value;
       const password = txtPassword.value;
       const auth = firebase.auth();
-      const promise = firebase.auth().createUserWithEmailAndPassword(email, password);
-      //window.location = "/signup.html";
+      const promise = auth.createUserWithEmailAndPassword(email, password).then(function(){window.location.replace("/signup.html");});
       promise.catch(e => console.log(e.message));
-      
     });
 
     //logout event
@@ -155,11 +152,30 @@
 
 
     firebase.auth().onAuthStateChanged(firebaseUser =>{
+         var errorc = error.code;
+         var errorm = error.message;
+          if (errorc = 'auth/invalid-email')
+            {alert("Correo invalido."); }
+          else if (errorc = 'auth/email-already-in-use')
+            {alert("Correo ya registrado."); }
+          else
+            {alert("Error al crear al usuario."); }
+
+
          if(firebaseUser)
           {console.log(firebaseUser);}
-
+           
         else
-          {console.log("No registrado.");}
+          { alert("No ingreso correctamente el usuario o la contrasena.");
+            console.log("No registrado.");}
+
+        
+               
+
+            
+
+
+
     });
 
   
