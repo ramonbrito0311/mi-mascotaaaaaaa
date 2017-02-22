@@ -128,49 +128,48 @@
       
     </div>
     <script>
-    //este es el script que contiene las funciones de autenticacion de usuarios
-    //obtengo los datos
-    const txtEmail = document.getElementById('txtEmail');
-    const txtPassword = document.getElementById('txtPassword');
-    const btnRegistrarse = document.getElementById('btnRegistrarse');
-    const btnLogout = document.getElementById('btnLogout');
-    const txtNombre = document.getElementById('txtNombre');
-    const txtApellido = document.getElementById('txtApellido');
-    const txtCedula = document.getElementById('txtCedula');
-    const txtTelefono = document.getElementById('txtTelefono');
-   
-    //signup event
+    
     btnRegistrarse.addEventListener('click', e => {
-      const email = txtEmail.value;
-      const password = txtPassword.value;
-      const auth = firebase.auth();
-      const nombre = txtNombre.value;
-      const apellido = txtApellido.value;
-      const cedula = txtCedula.value;
-      const telefono = txtTelefono.value;
-
-      const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
-      promise.catch(e => console.log(e.message));
-       //PRUEBA: meto los datos en la base de datos
-      function writeUserData(nombre, apellido, telefono, cedula){
-        firebase.database().ref('users/' + email).set({
-          Nombre: nombre,
-          Apellido: apellido,
-          Telefono: telefono,
-          Cedula: cedula
-        })
-      }
-    });
-   //realtima authentication listener
-   firebase.auth().onAuthStateChanged(firebaseUser => {
-        if(firebaseUser){
-          console.log(firebaseUser);
          
-        }else{
-          console.log('No has iniciado sesion');
-     
-        }
-   });
+      
+      function registrar(){
+
+            var nombre = $("#txtNombre").val();
+            var apellido = $("#txtApellido").val();
+            var cedula = $("#txtCedulatxt").val();
+            var telefono = $("#txtTelefono").val();
+            var email = $("#txtEmail").val();
+            var password = $("#txtPassword").val();
+
+            firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+
+              var user = firebase.auth().currentUser;
+
+              firebase.database().ref('usuario/'+user.uid).set({
+                    nombre: nombre,
+                    apellido: apellido,
+                    telefono: telefono,
+                    cedula: cedula
+              }).then(function(error){alert(error.code);})
+            
+
+            },function(error)
+            {
+               var errorc = error.code;
+               var errorm = error.message;
+               if (errorc = "auth/invalid-email")
+                {alert("Correo invalido.") }
+              else if (errorc = "auth/email-already-in-use")
+                {alert("Correo ya registrado.") }
+              else
+                {alert("Error al crear al usuario.") }
+            }
+
+        )};
+
+     });
+
+   
 </script>
   </main>
 </div>

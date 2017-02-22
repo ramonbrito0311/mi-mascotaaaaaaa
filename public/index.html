@@ -110,8 +110,7 @@
         <button id ="btnLogin" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Ingresar</button>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" 
-        onClick= "parent.location='signup.html'" >Registrarse</button>
+        <button id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Registrarse</button>
       </div>
       <div class="mdl-card__actions mdl-card--border">
         <button id ="btnLogout" class="mdl-button hide mdl-button--colored mdl-js-button mdl-js-ripple-effec">Salir</button>
@@ -120,42 +119,52 @@
     <script>
     //este es el script que contiene las funciones de autenticacion de usuarios
     //obtengo los datos
+    
     const txtEmail = document.getElementById('txtEmail');
     const txtPassword = document.getElementById('txtPassword');
+    const btnLogin = document.getElementById('btnLogin');
     const btnRegistrarse = document.getElementById('btnRegistrarse');
     const btnLogout = document.getElementById('btnLogout');
+
     //login event
     btnLogin.addEventListener('click', e => {
         const email = txtEmail.value;
         const password = txtPassword.value;
         const auth = firebase.auth();
-        const promise =  firebase.auth().signInWithEmailAndPassword(email, password);
+        const promise = firebase.auth().signInWithEmailAndPassword(email, password);
+        //window.location = "/ingreso.html";
         promise.catch(e => console.log(e.message));
+        
     });
+
     //signup event
     btnRegistrarse.addEventListener('click', e => {
       const email = txtEmail.value;
       const password = txtPassword.value;
       const auth = firebase.auth();
-
-      const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
+      const promise = firebase.auth().createUserWithEmailAndPassword(email, password);
+      //window.location = "/signup.html";
       promise.catch(e => console.log(e.message));
+      
     });
+
     //logout event
     btnLogout.addEventListener('click', e => {
       firebase.auth().signOut();
     });
-   //realtima authentication listener
-   firebase.auth().onAuthStateChanged(firebaseUser => {
-        if(firebaseUser){
-          console.log(firebaseUser);
-          btnLogout.classList.remove('hide');
-        }else{
-          console.log('No has iniciado sesion');
-           btnLogout.classList.add('hide');
-        }
-   });
-</script>
+
+
+    firebase.auth().onAuthStateChanged(firebaseUser =>{
+         if(firebaseUser)
+          {console.log(firebaseUser);}
+
+        else
+          {console.log("No registrado.");}
+    });
+
+  
+
+   </script>
   </main>
 </div>
   </main>
