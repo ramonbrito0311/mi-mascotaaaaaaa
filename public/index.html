@@ -123,8 +123,10 @@
     //obtengo los datos
     const txtEmail = document.getElementById('txtEmail');
     const txtPassword = document.getElementById('txtPassword');
+    const btnLogin = document.getElementById('btnLogin');
     const btnRegistrarse = document.getElementById('btnRegistrarse');
     const btnLogout = document.getElementById('btnLogout');
+
     //login event
     btnLogin.addEventListener('click', e => {
         const email = txtEmail.value;
@@ -133,6 +135,7 @@
         const promise =  firebase.auth().signInWithEmailAndPassword(email, password);
         promise.catch(e => console.log(e.message));
     });
+
     //signup event
     btnRegistrarse.addEventListener('click', e => {
       const email = txtEmail.value;
@@ -142,16 +145,20 @@
       const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
       promise.catch(e => console.log(e.message));
     });
+
     //logout event
+    btnLogout.addEventListener('click', e => {
+      firebase.auth().signOut();
+    });
 
    //realtima authentication listener
    firebase.auth().onAuthStateChanged(firebaseUser => {
         if(firebaseUser){
           console.log(firebaseUser);
-          btnLogout.classList.remove('hide');
+          //btnLogout.classList.remove('hide');
         }else{
           console.log('No has iniciado sesion');
-           btnLogout.classList.add('hide');
+          //btnLogout.classList.add('hide');
         }
    });
 </script>
