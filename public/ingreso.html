@@ -107,6 +107,7 @@
 <script>
   btnLogout.addEventListener('click', e => {
       firebase.auth().signOut();
+      window.location.replace("index.html");
     });
 </script>
       </main>

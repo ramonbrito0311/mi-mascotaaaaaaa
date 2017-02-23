@@ -111,8 +111,7 @@
         <button id ="btnLogin" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Ingresar</button>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" 
-        onClick= "parent.location='signup.html'" >Registrarse</button>
+        <button id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Registrarse</button>
       </div>
       <div class="mdl-card__actions mdl-card--border">
         <button id ="btnLogout" class="mdl-button mdl-js-button mdl-js-ripple-effect">Salir</button>
@@ -134,6 +133,7 @@
         const auth = firebase.auth();
         const promise =  firebase.auth().signInWithEmailAndPassword(email, password);
         promise.catch(e => console.log(e.message));
+        window.location.replace("ingreso.html");
     });
 
     //signup event
@@ -141,9 +141,9 @@
       const email = txtEmail.value;
       const password = txtPassword.value;
       const auth = firebase.auth();
-
-      const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
-      promise.catch(e => console.log(e.message));
+      firebase.auth().createUserWithEmailAndPassword(email, password);
+      //promise.catch(e => console.log(e.message));
+      window.location.replace("signup.html");
     });
 
     //logout event

@@ -113,23 +113,15 @@
             <input class="mdl-textfield__input" type="text" id="txtTelefono" />
             <label class="mdl-textfield__label" for="userpass">Telefono</label>
           </div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="txtEmail" />
-            <label class="mdl-textfield__label" for="username">Correo</label>
-          </div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="password" id="txtPassword" />
-            <label class="mdl-textfield__label" for="userpass">Contraseña</label>
-          </div>
         </form>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Registrarse</button>
+        <button id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" onClick="window.location.href='ingreso.html'">Completar registro</button>
       </div>
       
     </div>
     <script>
-    //este es el script que contiene las funciones de autenticacion de usuarios
+    
     //obtengo los datos
     const txtEmail = document.getElementById('txtEmail');
     const txtPassword = document.getElementById('txtPassword');
@@ -149,28 +141,16 @@
       const apellido = txtApellido.value;
       const cedula = txtCedula.value;
       const telefono = txtTelefono.value;
-
-      const promise =  firebase.auth().createUserWithEmailAndPassword(email, password);
-      promise.catch(e => console.log(e.message));
-       //realtima authentication listener
-        firebase.auth().onAuthStateChanged(firebaseUser => {
-        if(firebaseUser){
-          console.log(firebaseUser);
-         
-        }else{
-          console.log('No has iniciado sesion');
-     
-        }
-   });
-       //PRUEBA: meto los datos en la base de datos
+      //PRUEBA: meto los datos en la base de datos
       var firebaseUser = firebase.auth().currentUser;
         firebase.database().ref("user/" + firebaseUser.uid).set({
           Nombre: nombre,
           Apellido: apellido,
           Telefono: telefono,
           Cedula: cedula
-        })
-    });
+        });
+   });
+       
   
 </script>
   </main>
