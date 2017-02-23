@@ -122,9 +122,8 @@
             <input class="mdl-textfield__input" type="text" id="txtCuento" />
             <label class="mdl-textfield__label" for="userpass">Breve historia de tu mascota</label>
           </div>
-           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="txtTelefono" />
-            <label class="mdl-textfield__label" for="userpass">SUBE TRES FOTOS</label>
+          <div class="mdl-card__actions">
+               <input type="file" value = "upload" id = "btnUpload" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" multiple>Subir fotos</input>
           </div>
         </form>
       </div>
@@ -142,21 +141,48 @@
     const txtEdad = document.getElementById("txtEdad");
     const txtCuento = document.getElementById("txtCuento");
     const btnParticipar = document.getElementById('btnParticipar');
-    
+    const btnUpload = document.getElementById('btnUpload');
+
+    btnUpload.addEventListener('change', function(e) {
+      const firebaseUser = firebase.auth().currentUser;
+        //get file
+        var file = e.target.files;
+        var cont = 0;
+        
+        //comprobar que son 3 fotos
+        for (var i=0; i<e.target.files.length; i++){
+            cont++;
+        }
+
+        if(cont>3)
+            { alert("Solo se puede subir un maximo de 3 fotos!"); }
+            else
+            {
+              for(var i=0; i<=e.target.files.length; i++)
+            {
+              var storageRef = firebase.storage().ref('fotos/' + firebaseUser.uid + "/" + file[i].name);
+              storageRef.put(file[i]);
+            } 
+            }
+    });
+
     btnParticipar.addEventListener('click', e => {
       const firebaseUser = firebase.auth().currentUser;
       const nombreMascota = txtNombreMas.value;
       const edad = txtEdad.value;
       const cuento = txtCuento.value;
+
       firebase.database().ref("user/"+firebaseUser.uid+"/mascota/").set({
         nombreMascota: nombreMascota,
         edad: edad,
         cuento: cuento
-      }).then(function(){
+      }).then(function()
+      {
         window.location.replace("index.html");
       });
       //firebase.auth().signOut();
       });
+
 //realtime authentication listener
    firebase.auth().onAuthStateChanged(firebaseUser => {
         if(firebaseUser){
