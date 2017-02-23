@@ -105,9 +105,20 @@
   <div class="mdl-snackbar__text"></div>
 </div>
 <script>
-  btnLogout.addEventListener('click', e => {
+    const btnLogout = document.getElementById('btnLogout');
+    btnLogout.addEventListener('click', e => {
       firebase.auth().signOut();
       window.location.replace("index.html");
+      });
+//realtime authentication listener
+   firebase.auth().onAuthStateChanged(firebaseUser => {
+        if(firebaseUser){
+          console.log(firebaseUser);
+          //btnLogout.classList.remove('hide');
+        }else{
+          console.log('No has iniciado sesion');
+          //btnLogout.classList.add('hide');
+        }
     });
 </script>
       </main>

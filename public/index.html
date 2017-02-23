@@ -131,9 +131,10 @@
         const email = txtEmail.value;
         const password = txtPassword.value;
         const auth = firebase.auth();
-        const promise =  firebase.auth().signInWithEmailAndPassword(email, password);
-        promise.catch(e => console.log(e.message));
-        window.location.replace("ingreso.html");
+        firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
+          window.location.replace("ingreso.html");
+        });
+        //promise.catch(e => console.log(e.message));
     });
 
     //signup event
@@ -141,9 +142,10 @@
       const email = txtEmail.value;
       const password = txtPassword.value;
       const auth = firebase.auth();
-      firebase.auth().createUserWithEmailAndPassword(email, password);
+      firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+         window.location.replace("signup.html");
+      });
       //promise.catch(e => console.log(e.message));
-      window.location.replace("signup.html");
     });
 
     //logout event
