@@ -114,8 +114,9 @@
         <button id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Registrarse</button>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnLogout" class="mdl-button mdl-js-button mdl-js-ripple-effect">Salir</button>
+        <button id ="btnLogout" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">SAAAAL</button>
       </div>
+
     </div>
     <script>
     //este es el script que contiene las funciones de autenticacion de usuarios
@@ -147,12 +148,9 @@
       });
       //promise.catch(e => console.log(e.message));
     });
-
-    //logout event
     btnLogout.addEventListener('click', e => {
       firebase.auth().signOut();
-    });
-
+    })
    //realtima authentication listener
    firebase.auth().onAuthStateChanged(firebaseUser => {
         if(firebaseUser){
