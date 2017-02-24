@@ -27,7 +27,7 @@
     messagingSenderId: "1086282665376"
   };
   firebase.initializeApp(config);
-
+  const database = firebase.database();
 </script>
   <head>
   <script src="https://cdn.firebase.com/libs/firebaseui/1.0.0/firebaseui.js"></script>
@@ -93,70 +93,42 @@
   <main class="mdl-layout__content">
     <div class="mdl-card mdl-shadow--6dp">
       <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
-        <h2 class="mdl-card__title-text">Iniciar sesion</h2>
+        <h2 class="mdl-card__title-text">Participante</h2>
       </div>
       <div class="mdl-card__supporting-text">
         <form action="#">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="txtEmail" />
-            <label class="mdl-textfield__label" for="username">Correo</label>
+        <div>
+          <h9>Si ya participó, visualice el status de su solicitud. Sino, solo ingrese su cedula y participe</h9>
           </div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="password" id="txtPassword" />
-            <label class="mdl-textfield__label" for="userpass">Contraseña</label>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="txtCedula" />
+            <label class="mdl-textfield__label" for="userpass">Cedula de identidad</label>
           </div>
         </form>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnLogin" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Ingresar como admin</button>
+        <button id ="btnCheck" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Confirmar</button>
       </div>
-      <!--<div class="mdl-card__actions mdl-card--border">
-        <button id ="btnConcursar" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">¿Quieres concursar?</button>
-      </div>-->
-      <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnLogout" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">¿Eres participante?</button>
-      </div>
-
+      
     </div>
     <script>
-    //este es el script que contiene las funciones de autenticacion de usuarios
-    //obtengo los datos
-    const txtEmail = document.getElementById('txtEmail');
-    const txtPassword = document.getElementById('txtPassword');
-    const btnLogin = document.getElementById('btnLogin');
-    const btnConcursar = document.getElementById('btnConcursar');
-    const btnLogout = document.getElementById('btnLogout');
-
-    //login event
-    btnLogin.addEventListener('click', e => {
-        const email = txtEmail.value;
-        const password = txtPassword.value;
-        const auth = firebase.auth();
-        firebase.auth().signInWithEmailAndPassword(email, password).then(function(){
-          window.location.replace("ingreso.html");
-        });
-        //promise.catch(e => console.log(e.message));
-    });
-
-    //signup event
-    //btnConcursar.addEventListener('click', e => {
     
-        // window.location.replace("signup.html");
-     
-      //promise.catch(e => console.log(e.message));
-    //});
-    btnLogout.addEventListener('click', e => {
-      window.location.replace("verSolicitud.html");
-    });
-   //realtima authentication listener
-   firebase.auth().onAuthStateChanged(firebaseUser => {
-        if(firebaseUser){
-          console.log(firebaseUser);
-          //btnLogout.classList.remove('hide');
-        }else{
-          console.log('No has iniciado sesion');
-          //btnLogout.classList.add('hide');
-        }
+    //obtengo los datos
+    //const txtEmail = document.getElementById('txtEmail');
+    //const txtPassword = document.getElementById('txtPassword');
+    const btnCheck = document.getElementById('btnCheck');
+    //const btnLogout = document.getElementById('btnLogout'); 
+    const txtCedula = document.getElementById('txtCedula');
+      //signup event
+    btnCheck.addEventListener('click', e => {
+      const cedula = txtCedula.value;
+      localStorage.setItem("cedula", cedula);  //Guardamos la cedula para poder usarla en otras vistas
+      //IMPORTANT: Aqui verifico la cedula. Si ya esta en la bdd, se redirige a la pagina para ver su participacion. Sino, lo invitamos a registrarse
+      var ref = firebase.database().ref("user/"+cedula).once('value').then(function(snapshot){
+          var verifCed = snapshot.val();
+           if (verifCed == null){window.location.replace("signup.html");}
+      else{window.location.replace("verParticipacion.html");}
+      });
    });
 </script>
   </main>

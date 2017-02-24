@@ -93,14 +93,10 @@
   <main class="mdl-layout__content">
     <div class="mdl-card mdl-shadow--6dp">
       <div class="mdl-card__title mdl-color--primary mdl-color-text--white">
-        <h2 class="mdl-card__title-text">Registrarse</h2>
+        <h2 class="mdl-card__title-text">Ingresa tus datos</h2>
       </div>
       <div class="mdl-card__supporting-text">
         <form action="#">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="txtCedula" />
-            <label class="mdl-textfield__label" for="userpass">Cedula de identidad</label>
-          </div>
          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="txtNombre" />
             <label class="mdl-textfield__label" for="userpass">Nombre</label>
@@ -129,20 +125,21 @@
     //const btnLogout = document.getElementById('btnLogout');
     const txtNombre = document.getElementById('txtNombre');
     const txtApellido = document.getElementById('txtApellido');
-    const txtCedula = document.getElementById('txtCedula');
+    //const txtCedula = document.getElementById('txtCedula');
     const txtTelefono = document.getElementById('txtTelefono');
    
       //signup event
     btnRegistrarse.addEventListener('click', e => {
       
-      const auth = firebase.auth();
+      //const auth = firebase.auth();
       const nombre = txtNombre.value;
       const apellido = txtApellido.value;
-      const cedula = txtCedula.value;
+      //const cedula = txtCedula.value;
       const telefono = txtTelefono.value;
+      var cedula = localStorage.getItem("cedula");
       //PRIMERO compruebo que la cedula no este en la bdd
       //intermedio: guardo la cedula como objeto para usarla en la otra vista
-      localStorage.setItem("cedula", cedula);
+      //localStorage.setItem("cedula", cedula);
       //LUEGO meto los datos en la base de datos
      // const firebaseUser = firebase.auth().currentUser;
         firebase.database().ref("user/" + cedula).set({
