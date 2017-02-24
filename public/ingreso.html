@@ -142,7 +142,7 @@
     const txtCuento = document.getElementById("txtCuento");
     const btnParticipar = document.getElementById('btnParticipar');
     const btnUpload = document.getElementById('btnUpload');
-
+    var cedula = localStorage.getItem("cedula");
     btnUpload.addEventListener('change', function(e) {
       const firebaseUser = firebase.auth().currentUser;
         //get file
@@ -160,7 +160,7 @@
             {
               for(var i=0; i<=e.target.files.length; i++)
             {
-              var storageRef = firebase.storage().ref('fotos/' + firebaseUser.uid + "/" + file[i].name);
+              var storageRef = firebase.storage().ref('fotos/' + cedula + "/" + file[i].name);
               storageRef.put(file[i]);
             } 
             }
@@ -172,7 +172,7 @@
       const edad = txtEdad.value;
       const cuento = txtCuento.value;
 
-      firebase.database().ref("user/"+firebaseUser.uid+"/mascota/").set({
+      firebase.database().ref("user/"+cedula+"/mascota/").set({
         nombreMascota: nombreMascota,
         edad: edad,
         cuento: cuento

@@ -108,13 +108,13 @@
         </form>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnLogin" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Ingresar</button>
+        <button id ="btnLogin" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Ingresar como admin</button>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnRegistrarse" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Registrarse</button>
+        <button id ="btnConcursar" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">¿Quieres concursar?</button>
       </div>
       <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnLogout" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">SAAAAL</button>
+        <button id ="btnLogout" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Quitar este boton</button>
       </div>
 
     </div>
@@ -124,7 +124,7 @@
     const txtEmail = document.getElementById('txtEmail');
     const txtPassword = document.getElementById('txtPassword');
     const btnLogin = document.getElementById('btnLogin');
-    const btnRegistrarse = document.getElementById('btnRegistrarse');
+    const btnConcursar = document.getElementById('btnConcursar');
     const btnLogout = document.getElementById('btnLogout');
 
     //login event
@@ -139,13 +139,10 @@
     });
 
     //signup event
-    btnRegistrarse.addEventListener('click', e => {
-      const email = txtEmail.value;
-      const password = txtPassword.value;
-      const auth = firebase.auth();
-      firebase.auth().createUserWithEmailAndPassword(email, password).then(function(){
+    btnConcursar.addEventListener('click', e => {
+    
          window.location.replace("signup.html");
-      });
+     
       //promise.catch(e => console.log(e.message));
     });
     btnLogout.addEventListener('click', e => {

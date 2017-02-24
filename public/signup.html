@@ -97,6 +97,10 @@
       </div>
       <div class="mdl-card__supporting-text">
         <form action="#">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="txtCedula" />
+            <label class="mdl-textfield__label" for="userpass">Cedula de identidad</label>
+          </div>
          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="txtNombre" />
             <label class="mdl-textfield__label" for="userpass">Nombre</label>
@@ -104,10 +108,6 @@
            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="txtApellido" />
             <label class="mdl-textfield__label" for="userpass">Apellido</label>
-          </div>
-           <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="txtCedula" />
-            <label class="mdl-textfield__label" for="userpass">Cedula</label>
           </div>
            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input class="mdl-textfield__input" type="text" id="txtTelefono" />
@@ -134,22 +134,23 @@
    
       //signup event
     btnRegistrarse.addEventListener('click', e => {
-      //const email = txtEmail.value;
-      //const password = txtPassword.value;
+      
       const auth = firebase.auth();
       const nombre = txtNombre.value;
       const apellido = txtApellido.value;
       const cedula = txtCedula.value;
       const telefono = txtTelefono.value;
-      //PRUEBA: meto los datos en la base de datos
-      const firebaseUser = firebase.auth().currentUser;
-        firebase.database().ref("user/" + firebaseUser.uid).set({
+      //PRIMERO compruebo que la cedula no este en la bdd
+      //intermedio: guardo la cedula como objeto para usarla en la otra vista
+      localStorage.setItem("cedula", cedula);
+      //LUEGO meto los datos en la base de datos
+     // const firebaseUser = firebase.auth().currentUser;
+        firebase.database().ref("user/" + cedula).set({
           Nombre: nombre,
           Apellido: apellido,
           Telefono: telefono,
-          Cedula: cedula
         }).then(function(){
-           window.location.replace("ingreso.html");
+          window.location.replace("ingreso.html");
         });
    });
     //realtima authentication listener
