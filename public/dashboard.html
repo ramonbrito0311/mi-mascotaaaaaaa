@@ -89,8 +89,19 @@
       <!-- Title -->
       <span class="mdl-layout-title">Concurso Mi Mascota</span>
       <!-- Add spacer, to align navigation to the right -->
-      <div class="mdl-layout-spacer"></div>
+      
+      <div class="mdl-layout-spacer">
+         
+      </div>
+      <div class="mdl-layout-spacer">
+         
+      </div>
+
+      <div class="mdl-layout-spacer" allign="right">
+        <button id="btnLogout" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored mdl-color-text--white">Cerrar sesion</button>
+      </div>
       <!-- Navigation. We hide it in small screens. -->
+
     </div>
   </header>
   <main class="mdl-layout__content">
@@ -107,7 +118,7 @@
               <th class="mdl-data-table__cell--non-numeric">Cedula</th>
               <th class="mdl-data-table__cell--non-numeric">Nombre de la mascota</th>
               <th class="mdl-data-table__cell--non-numeric">Edad</th>
-              <th class="mdl-data-table__cell--non-numeric">Historia</th>
+              <th class="mdl-data-table__cell--non-numeric">Acciones</th>
             </tr>
           </thrad>
           <tbody>
@@ -115,16 +126,55 @@
           </tbody>
         </table>
       </div>
-     
-      
     </div>
     <script>
-    var data = firebase.database.ref("user/").once('value').then(function(snapshot){
-        var cedula = snapshot.val();
+    const btnLogout = document.getElementById("btnLogout");
+    const auth = firebase.auth();
+    btnLogout.addEventListener('click', e => {
+      firebase.auth().signOut();
+      window.location.replace("index.html");
     });
-    $(data.cedula).each(function(index, element){  
-     $('#tbConcurso').append('<tr><td> '+element[0]+' </td></tr>');       
-})
+   // var ref = firebase.database().ref("user/");
+   // ref.on('value', llenarTabla, e);
+    //(data.cedula).each(function(index, element){  
+     //('#tbConcurso').append('<tr><td> '+element[0]+' </td></tr>');       
+
+    function llenarTabla (data){
+      console.log(data.val());
+      var aux = document.getElementByClassName("mascota");
+      console.log(aux);
+      for (var i = 0; i < aux.length; i++) {
+        aux[i].remove();
+      }
+      var mascota = data.val();
+      if (mascota!=undefined){
+        var nmasc = Object.keys(mascota);
+        for (var i = 0; i < nmasc.length; i++) {
+          var aux2 = nmasc[i];
+          var nombreMascota = mascota[k].nombreMascota;
+          var edad = mascota[k].edad;
+          var cedula = aux2;
+
+          var fila = document.createElement('tr');
+          fila.className = 'mascota';
+
+          var nombre = document.createElement('td');
+          //var nombreMascota =document.createElement('td');
+          var ed =document.createElement('td');
+          var cedu = document.createElement('td');
+         // var boton1 = 
+          //var boton2
+          var nNombre = document.createTextNode(nombreMascota);
+          var nEdad = document.createTextNode(edad);
+          var nCedula= document.createTextNode(cedula);
+
+        }
+      }
+    }
+    function e (){
+      console.log("ERROR");
+    }
+    
 </script>
   </main>
 </div>

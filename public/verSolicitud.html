@@ -109,7 +109,6 @@
       <div class="mdl-card__actions mdl-card--border">
         <button id ="btnCheck" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Confirmar</button>
       </div>
-      
     </div>
     <script>
     
@@ -127,7 +126,18 @@
       var ref = firebase.database().ref("user/"+cedula).once('value').then(function(snapshot){
           var verifCed = snapshot.val();
            if (verifCed == null){window.location.replace("signup.html");}
-      else{window.location.replace("verParticipacion.html");}
+      else{
+        firebase.database().ref("user/"+cedula).once('value').then(function(snapshot){
+          var aprobado = snapshot.val().Aprobado;
+          var pendiente = snapshot.val().Pendiente;
+           if (pendiente==true){console.log("no han revisado la solicitud"); alert("Su solicitud esta en proceso de revision");s}
+           else if(pendiente==false && aprobado == false){console.log("tu solicitud fue rechazada"); alert("Su solicitud ha sido rechazada");}
+          else{window.location.replace("verParticipacion.html");}
+        
+        });
+        
+       
+      }
       });
    });
 </script>
