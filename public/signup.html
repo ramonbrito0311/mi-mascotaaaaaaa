@@ -98,7 +98,7 @@
       <div class="mdl-card__supporting-text">
         <form action="#">
          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" type="text" id="txtNombre" />
+            <input class="mdl-textfield__input" type="text" id="txtNombre"/>
             <label class="mdl-textfield__label" for="userpass">Nombre</label>
           </div>
            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -142,7 +142,8 @@
       //localStorage.setItem("cedula", cedula);
       //LUEGO meto los datos en la base de datos
      // const firebaseUser = firebase.auth().currentUser;
-        firebase.database().ref("user/" + cedula).set({
+     if(nombre!="" && apellido != "" && telefono!= ""){
+      firebase.database().ref("user/" + cedula).set({
           Nombre: nombre,
           Apellido: apellido,
           Telefono: telefono,
@@ -153,6 +154,8 @@
         }).then(function(){
           window.location.replace("ingreso.html");
         });
+      }else{alert("Faltan datos por llenar en el formulario!");}
+        
    });
     //realtima authentication listener
    firebase.auth().onAuthStateChanged(firebaseUser => {

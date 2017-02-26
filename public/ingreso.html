@@ -122,6 +122,13 @@
             <input class="mdl-textfield__input" type="text" id="txtCuento" />
             <label class="mdl-textfield__label" for="userpass">Breve historia de tu mascota</label>
           </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="txtAdoptado" />
+            <label class="mdl-textfield__label" for="userpass">Si fue adoptada ¿Donde fue hallada?</label>
+          </div>
+          <div>
+            <progress  id="progress" class="mdl-progress mdl-js-progress" value="0" max="100">0%</progress>
+          </div>
           <div class="mdl-card__actions">
                <input type="file" value = "upload" id = "btnUpload" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" multiple>Subir fotos</input>
           </div>
@@ -134,17 +141,18 @@
 <div id="demo-toast-example" class="mdl-js-snackbar mdl-snackbar">
   <div class="mdl-snackbar__text"></div>
 </div>
-
-
 <script>
     const txtNombreMas = document.getElementById("txtNombreMas");
     const txtEdad = document.getElementById("txtEdad");
     const txtCuento = document.getElementById("txtCuento");
     const btnParticipar = document.getElementById('btnParticipar');
     const btnUpload = document.getElementById('btnUpload');
+    const txtAdoptado = document.getElementById('txtAdoptado');
+    const progressBar = document.getElementById('progress');
     var cedula = localStorage.getItem("cedula");
     btnUpload.addEventListener('change', function(e) {
       const firebaseUser = firebase.auth().currentUser;
+
         //get file
         var file = e.target.files;
         var cont = 0;
@@ -153,17 +161,32 @@
         for (var i=0; i<e.target.files.length; i++){
             cont++;
         }
-
+        localStorage.setItem("Contador", cont);
         if(cont>3)
-            { alert("Solo se puede subir un maximo de 3 fotos!"); }
-            else
+            { alert("Solo se puede subir un maximo de 3 fotos! Vuelva a seleccionar las de su preferencia"); }
+        else if(cont==3)
             {
-              for(var i=0; i<=e.target.files.length; i++)
+              for(var i=0; i<e.target.files.length; i++)
             {
               var storageRef = firebase.storage().ref('fotos/' + cedula + "/" + file[i].name);
-              storageRef.put(file[i]);
+              var task = storageRef.put(file[i]);
+
+              //progress bar
+              task.on('state_changed',
+                    function progress(snappy){
+                      var percentage = (snappy.bytesTransferred/snappy.totalBytes) * 100;
+                      progressBar.value = percentage;
+                    },
+                    function error (err){
+
+                    },
+                    function complete(){
+
+                    }
+                )
+
             } 
-            }
+            }else{alert("Debes subir tres fotos de tu mascota! Vuelva a seleccionar las de su preferencia");}
     });
 
     btnParticipar.addEventListener('click', e => {
@@ -171,15 +194,19 @@
       const nombreMascota = txtNombreMas.value;
       const edad = txtEdad.value;
       const cuento = txtCuento.value;
-
-      firebase.database().ref("user/"+cedula+"/mascota/").set({
+      const adoptado = txtAdoptado.value;
+      var cont = localStorage.getItem("Contador");
+      if(nombreMascota!="" && edad!="" && cuento!="" && cont==3){
+        firebase.database().ref("user/"+cedula+"/mascota/").set({
         nombreMascota: nombreMascota,
         edad: edad,
-        cuento: cuento
-      }).then(function()
-      {
+        cuento: cuento,
+        adoptado: adoptado
+      }).then(function(){
         window.location.replace("index.html");
       });
+    }else{alert("Faltan datos por llenar en el formulario!");}
+      
       //firebase.auth().signOut();
       });
 

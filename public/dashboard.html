@@ -62,8 +62,8 @@
     }
     .mdl-card{
       margin: 5px 5px;
-      width: 570px;
-      height: 570px;
+      width: 630px;
+      height: 630px;
     }
     </style>
   </head>
@@ -97,6 +97,11 @@
         <h2 class="mdl-card__title-text">Concursantes</h2>
       </div>
       <div class="mdl-card__supporting-text"> 
+      <div>
+        <button id="btnAll" class="mdl-button mdl-js-button mdl-button--primary">Todo</button>
+        <button id="btnAprobado" class="mdl-button mdl-js-button mdl-button--primary">Aprobados</button>
+        <button id="btnRejected" class="mdl-button mdl-js-button mdl-button--primary">Rechazados</button>
+      </div>
         <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" id="tabla">
           <thrad>
             <tr>
@@ -114,12 +119,14 @@
     <script>
     //const btnLogout = document.getElementById("btnLogout");
     const auth = firebase.auth();
-    
+    const btnAll = document.getElementById("btnAll");
+    const btnAprobado = document.getElementById("btnAprobado");
+    const btnRejected = document.getElementById("btnRejected");
    // var ref = firebase.database().ref("user/");
    // ref.on('value', llenarTabla, e);
     //(data.cedula).each(function(index, element){  
      //('#tbConcurso').append('<tr><td> '+element[0]+' </td></tr>');       
-
+     
       var ref = firebase.database().ref('user');
       var tabla= $("#tabla").val();
       ref.once('value', snap=>{
@@ -128,13 +135,37 @@
             var edad=hijo.child("mascota").child("edad").val();
             var nombreM=hijo.child("mascota").child("nombreMascota").val();
             var cedula=hijo.child("Cedula").val();
-           
-          var nuevaFila = $('<tr><td style="text-align:center;"><p>' +cedula+
+            var aprobado=hijo.child("Aprobado").val();
+            var pendiente = hijo.child("Pendiente").val();
+           btnAll.addEventListener('click', e=>{
+               var nuevaFila = $('<tr><td style="text-align:center;"><p>' +cedula+
             '</p></td><td style="text-align:center;"><p>' +nombre+
             '</p></td><td style="text-align:center;"><p>' +nombreM+
             '</p></td><td style="text-align:center;"><p>' +edad+
             '</p><td><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect  mdl-button--accent mdl-color-text--white" onclick=verData('+cedula+')>Ver</button></td><p>');
-          $("#tabla").append(nuevaFila);
+            $("#tabla").append(nuevaFila);
+           });
+         btnAprobado.addEventListener('click', e=>{
+            if(aprobado == true){
+                 var nuevaFila = $('<tr><td style="text-align:center;"><p>' +cedula+
+            '</p></td><td style="text-align:center;"><p>' +nombre+
+            '</p></td><td style="text-align:center;"><p>' +nombreM+
+            '</p></td><td style="text-align:center;"><p>' +edad+
+            '</p><td><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect  mdl-button--accent mdl-color-text--white" onclick=verData('+cedula+')>Ver</button></td><p>');
+            $("#tabla").append(nuevaFila);
+            }
+         });
+         btnRejected.addEventListener('click', e=>{
+            if(aprobado == false && pendiente == false){
+                 var nuevaFila = $('<tr><td style="text-align:center;"><p>' +cedula+
+            '</p></td><td style="text-align:center;"><p>' +nombre+
+            '</p></td><td style="text-align:center;"><p>' +nombreM+
+            '</p></td><td style="text-align:center;"><p>' +edad+
+            '</p><td><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect  mdl-button--accent mdl-color-text--white" onclick=verData('+cedula+')>Ver</button></td><p>');
+            $("#tabla").append(nuevaFila);
+            }
+         });
+         
         });
       });
 

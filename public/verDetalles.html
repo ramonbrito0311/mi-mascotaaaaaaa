@@ -173,6 +173,7 @@
         var ref = firebase.database().ref("user/"+cedula).update({
             Pendiente: false,
            Modificar: true,
+           Aprobado: true,
         }).then(function(){
           console.log("puede modificar");
           alert("Haz desbloqueado la opcion para modificar los datos");
