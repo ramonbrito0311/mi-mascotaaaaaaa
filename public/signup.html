@@ -142,12 +142,14 @@
       //localStorage.setItem("cedula", cedula);
       //LUEGO meto los datos en la base de datos
      // const firebaseUser = firebase.auth().currentUser;
-        firebase.database().ref("admin/" + cedula).set({
+        firebase.database().ref("user/" + cedula).set({
           Nombre: nombre,
           Apellido: apellido,
           Telefono: telefono,
+          Cedula: cedula,
           Aprobado: false,
-          Pendiente: true
+          Pendiente: true,
+          Modificar: false
         }).then(function(){
           window.location.replace("ingreso.html");
         });

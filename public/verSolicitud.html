@@ -130,13 +130,14 @@
         firebase.database().ref("user/"+cedula).once('value').then(function(snapshot){
           var aprobado = snapshot.val().Aprobado;
           var pendiente = snapshot.val().Pendiente;
-           if (pendiente==true){console.log("no han revisado la solicitud"); alert("Su solicitud esta en proceso de revision");s}
-           else if(pendiente==false && aprobado == false){console.log("tu solicitud fue rechazada"); alert("Su solicitud ha sido rechazada");}
-          else{window.location.replace("verParticipacion.html");}
-        
+          var modificar = snapshot.val().Modificar;
+           if (pendiente==true){console.log("no han revisado la solicitud"); alert("Su solicitud esta en proceso de revision");}
+           else if(pendiente==false && aprobado == false && modificar == false){console.log("tu solicitud fue rechazada"); 
+           alert("Su solicitud ha sido rechazada");}
+        else if(pendiente==false && aprobado == true){alert("Tu solicitud ha sido aprobada");}
+        else if(pendiente == false && aprobado == false && modificar==true){alert("El administrador del sistema ha solicitado una modificacion de sus datos");
+          window.location.replace("verParticipacion.html");}
         });
-        
-       
       }
       });
    });
