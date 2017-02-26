@@ -135,9 +135,11 @@
             else if(pendiente==false && aprobado == false){console.log("tu solicitud fue rechazada"); 
             alert("Su solicitud ha sido rechazada");}
             else if(pendiente==false && aprobado == true){
-              if (modificar==false){alert("Tu solicitud ha sido aprobada! Felicidades");}
+              //console.log(modificar);
+              if (modificar==false){alert("Tu solicitud ha sido aprobada! Revise ocasionalmente si el administrador solicita alguna modificacion");}
               else{alert("El administrador del sistema ha solicitado una modificacion de sus datos");
-              window.location.replace("verParticipacion.html");}
+              window.location.replace("verParticipacion.html");
+            }
            }
         });
       }

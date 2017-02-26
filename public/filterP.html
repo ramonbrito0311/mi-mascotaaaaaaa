@@ -62,8 +62,8 @@
     }
     .mdl-card{
       margin: 5px 5px;
-      width: 570px;
-      height: 570px;
+      width: 700px;
+      height: 700px;
     }
     </style>
   </head>
@@ -106,110 +106,56 @@
         <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp" id="tabla">
           <thrad>
             <tr>
-             <th class="mdl-data-table__cell--non-numeric">Nombre</th>
-             <th class="mdl-data-table__cell--non-numeric">Apellido</th>
-              <th class="mdl-data-table__cell--non-numeric">Nombre mascota</th>
+             <th class="mdl-data-table__cell--non-numeric">Cedula</th>
+              <th class="mdl-data-table__cell--non-numeric">Nombre</th>
+              <th class="mdl-data-table__cell--non-numeric">Nombre de la mascota</th>
               <th class="mdl-data-table__cell--non-numeric">Edad</th>
-              <th class="mdl-data-table__cell--non-numeric">Historia</th>
-              
+              <th class="mdl-data-table__cell--non-numeric">Acciones</th>
             </tr>
           </thrad>
         </table>
       </div>
-      <div class="mdl-card__actions mdl-card--border">
-        <button id ="btnAprobar" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Aprobar</button>
-        <button id ="btnRechazar" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Rechazar</button>
-        <button id ="btnModificar" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Solicitar modificacion</button>
-      </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
-    //const btnLogout = document.getElementById("btnLogout");
+    const btnLogout = document.getElementById("btnLogout");
     const auth = firebase.auth();
-    
+    const btnBack = document.getElementById("btnBack");
    // var ref = firebase.database().ref("user/");
    // ref.on('value', llenarTabla, e);
     //(data.cedula).each(function(index, element){  
      //('#tbConcurso').append('<tr><td> '+element[0]+' </td></tr>');       
-     var cedula = localStorage.getItem("cedula");
-      var ref = firebase.database().ref('user/'+cedula);
+     var ref = firebase.database().ref('user');
       var tabla= $("#tabla").val();
       ref.once('value', snap=>{
-            var nombre=snap.child("Nombre").val();
-            var apellido=snap.child("Apellido").val();
-            var nombreM=snap.child("mascota").child("nombreMascota").val();
-            var edad=snap.child("mascota").child("edad").val();
-            var cuento=snap.child("mascota").child("cuento").val();
-           
-          var nuevaFila = $('<tr><td style="text-align:center;"><p>' +nombre+
-            '</p></td><td style="text-align:center;"><p>' +apellido+
+        snap.forEach(hijo=>{
+            var nombre=hijo.child("Nombre").val();
+            var edad=hijo.child("mascota").child("edad").val();
+            var nombreM=hijo.child("mascota").child("nombreMascota").val();
+            var cedula=hijo.child("Cedula").val();
+            var aprobado=hijo.child("Aprobado").val();
+            var pendiente = hijo.child("Pendiente").val();
+            if (pendiente == true){
+              var nuevaFila = $('<tr><td style="text-align:center;"><p>' +cedula+
+            '</p></td><td style="text-align:center;"><p>' +nombre+
             '</p></td><td style="text-align:center;"><p>' +nombreM+
             '</p></td><td style="text-align:center;"><p>' +edad+
-            '</p></td><td style="text-align:center;"><p>' +cuento+
-            '</p></td>');
-          $("#tabla").append(nuevaFila);
+            '</p><td><button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect  mdl-button--accent mdl-color-text--white" onclick=verData('+cedula+')>Ver</button></td><p>');
+            $("#tabla").append(nuevaFila);
+            }
+
+          });
       });
-      btnAprobar.addEventListener('click', e =>{
-        firebase.database().ref("user/"+cedula+"/Pendiente").once('value').then(function(snappy){
-          var pen = snappy.val();
-          console.log(pen);
-       
-        if(pen == true){
-           var ref = firebase.database().ref("user/"+cedula).update({
-           Pendiente: false,
-           Aprobado: true,
-        }).then(function(){
-          console.log("esoo lo aprobaste");
-          alert("Haz aprobado esta entrada");
-          window.location.replace("dashboard.html");
-        });
-      }else{
-        alert("Ya se aprobo al usuario! Solamente se puede solicitar modificaciones, si asi lo requiere");
-      }
-       });
-       
-      });
-      btnRechazar.addEventListener('click', e =>{
-       firebase.database().ref("user/"+cedula+"/Pendiente").once('value').then(function(snappy){
-            var pen = snappy.val();
+            
       
-        if (pen==true){
-           var ref = firebase.database().ref("user/"+cedula).update({
-            Pendiente: false,
-           Aprobado: false,
-        }).then(function(){
-          console.log("lo rechazaste vale :( malo");
-          alert("Haz rechazado esta entrada");
-          window.location.replace("dashboard.html");
-        });
-      }else{alert("Ya se aprobo al usuario! Solamente se puede solicitar modificaciones, si asi lo requiere");}
-         });
-      });
-      btnModificar.addEventListener('click', e =>{
-        firebase.database().ref("user/"+cedula+"/Pendiente").once('value').then(function(snappy){
-          var pen = snappy.val();
-       if(pen==false){
-
-       
-        firebase.database().ref("user/"+cedula).update({
-            //Pendiente: false,
-           Modificar: true,
-           //Aprobado: true
-        }).then(function(){
-          console.log("puede modificar");
-          alert("Haz desbloqueado la opcion para modificar los datos");
-          window.location.replace("dashboard.html");
-        });
-        }else{
-          alert("No puedes solicitar modificaciones porque no ha sido aprobado o rechazado");
-        }
-
-         });
-        
-      });
+      function verData(cedula){
+          localStorage.setItem("cedula", cedula);
+          //console.log(cedula);
+          window.location.replace("verDetalles.html");
+      }
       btnBack.addEventListener('click', e=>{
         window.location.replace("dashboard.html");
-      })
+      });
       btnLogout.addEventListener('click', e => {
         //var cedula = localStorage.getItem("cedula");
         //console.log(cedula);
